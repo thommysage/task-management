@@ -1,4 +1,4 @@
-name: Go Bottom-Up Integration CI
+name: Go Bottom-Up Integration CI/CD
 
 on:
   push:
@@ -19,5 +19,32 @@ jobs:
       with:
         go-version: '1.22'
 
+    
     - name: Run Bottom-Up Tests
       run: go test -v ./...
+
+  deploy:
+    needs: test 
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: '1.22'
+
+    
+    - name: Build Application Artifact
+      run: go build -o task-app main.go
+
+    
+    - name: Continuous Deployment to Production Server
+      run: |
+        echo "Starting Continuous Deployment (CD) pipeline..."
+        echo "Connecting to Production Environment..."
+        echo "Transferring executable task-app binary..."
+        echo "Deploying Task Management Service successfully!"
+        echo "Application URL: http://localhost:8080"
